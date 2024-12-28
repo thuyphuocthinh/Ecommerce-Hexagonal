@@ -7,3 +7,7 @@ export const I_paging_DTO_schema = z.object({
 })
 
 export type I_paging_DTO = z.infer<typeof I_paging_DTO_schema>;
+
+// page => current page
+// limit => number of items per page
+// total => total number of items of the collection

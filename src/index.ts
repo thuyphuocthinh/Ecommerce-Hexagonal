@@ -26,3 +26,9 @@ app.listen(PORT, () => {
 })();
 
 
+/*
+    1. Infrastructure => transport, repository (persistent database, ORM implementation)
+    2. Usecase => business logic
+    3. Model => dto, schema, error for business logic
+    4. Interface => use case interface, repository interface
+*/

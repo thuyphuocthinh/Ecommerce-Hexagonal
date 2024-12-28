@@ -40,7 +40,6 @@ export class CategoryUseCase implements ICategoryUseCase {
         }
         return data;
     }
-
     async createANewCategory(data: I_categories_create_DTO): Promise<string> {
         const newId: string = v7();
         const category: I_categories = {
