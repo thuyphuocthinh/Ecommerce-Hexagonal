@@ -15,7 +15,13 @@ export class ProductPersistence extends Model {
     declare updated_at: Date;
 }
 
-export const modelName = "Product";
+export class BrandPersistence extends Model {}
+
+export class CategoryPersistence extends Model {}
+
+export const modelNameOfProduct = "Product";
+export const modelNameOfBrand = "Brand";
+export const modelNameOfCategory = "Category";
 
 export function init(sequelize: Sequelize) {
     ProductPersistence.init({
@@ -76,7 +82,46 @@ export function init(sequelize: Sequelize) {
         createdAt: "created_at",
         updatedAt: "updated_at",
         sequelize,
-        modelName,
+        modelName: modelNameOfProduct,
         timestamps: true
     });
+
+    BrandPersistence.init({
+        id: {
+            type: DataTypes.STRING,
+            primaryKey: true,
+            allowNull: false,
+        },
+
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+    }, {
+        tableName: "brands",
+        sequelize,
+        modelName: modelNameOfBrand,
+        timestamps: true
+    });
+
+    CategoryPersistence.init({
+        id: {
+            type: DataTypes.STRING,
+            primaryKey: true,
+            allowNull: false,
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+    }, {
+        tableName: "categories",
+        sequelize,
+        modelName: modelNameOfCategory,
+        timestamps: true
+    });
+
+    // => create relationship between tables
+    // ProductPersistence.belongsTo(BrandPersistence, { foreignKey: { field: "brand_id"}, as: "brand" });
+    // ProductPersistence.belongsTo(CategoryPersistence, { foreignKey: { field: "category_id"}, as: "category" });
 }

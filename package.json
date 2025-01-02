@@ -23,6 +23,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "axios": "^1.7.9",
     "code": "file:",
     "dotenv": "16.4.7",
     "express": "^4.21.2",

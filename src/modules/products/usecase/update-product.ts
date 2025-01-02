@@ -1,12 +1,13 @@
 import { ICommandHandler } from "../../../share/interface";
-import { UpdateProductCommand, IProductRepository } from "../interface";
-import { ProductUpdateDTOSchema } from "../model/dto";
+import { UpdateCommand } from "../../../share/usecase";
+import { IProductRepository } from "../interface";
+import { ProductUpdateDTO, ProductUpdateDTOSchema } from "../model/dto";
 import { ErrorProductNotFound } from "../model/errors";
 
-export class ProductUpdateHandler implements ICommandHandler<UpdateProductCommand, boolean> {
+export class ProductUpdateHandler implements ICommandHandler<UpdateCommand<ProductUpdateDTO>, boolean> {
     constructor(private readonly productRepository: IProductRepository) {}
 
-    async execute(cmd: UpdateProductCommand): Promise<boolean> {
+    async execute(cmd: UpdateCommand<ProductUpdateDTO>): Promise<boolean> {
         const {data: parsedData, success, error} = ProductUpdateDTOSchema.safeParse(cmd.data);
         if (!success) {
             throw new Error(error.message);

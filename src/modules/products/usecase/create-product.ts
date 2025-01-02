@@ -1,12 +1,12 @@
 import { v7 } from "uuid";
 import { ICommandHandler } from "../../../share/interface";
 import { CreateProductCommand, IProductRepository } from "../interface";
-import { ProductCreateDTOSchema } from "../model/dto";
+import { ProductCreateDTO, ProductCreateDTOSchema } from "../model/dto";
 import { ErrorProductNameDuplicate } from "../model/errors";
 import { Product } from "../model/product";
 import { ModelStatus } from "../../../share/model/base-model";
-
-export class CreateProductHandler implements ICommandHandler<CreateProductCommand, string> {
+import { CreateCommand } from "../../../share/usecase";
+export class CreateProductHandler implements ICommandHandler<CreateCommand<ProductCreateDTO>, string> {
     constructor(private readonly productRepository: IProductRepository) {}
 
     async execute(cmd: CreateProductCommand): Promise<string> {

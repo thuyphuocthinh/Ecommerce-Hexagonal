@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
-import { init } from "./infras/repository/dto";
-import { MySQLProductRepository } from "./infras/repository";
+import { init } from "./infras/repository/mysql/dto";
+import { MySQLProductRepository } from "./infras/repository/mysql";
 import { ProductHttpService } from "./infras/transport/http-service";
 import { Router } from "express";
 import { CreateProductHandler } from "./usecase/create-product";
@@ -8,6 +8,8 @@ import { QueryDetailProductHandler } from "./usecase/detail-product";
 import { ProductUpdateHandler } from "./usecase/update-product";
 import { DeleteProductHandler    } from "./usecase/delete-product";
 import { QueryListProductHandler } from "./usecase/list-product";
+import { RPCProductBrandRepository, RPCProductCategoryRepository, RPCProxyBrandRepository, RPCProxyCategoryRepository } from "./infras/repository/rpc";
+import { config } from "../../share/component/config";
 
 export const setUpProductsHexagon = (sequelize: Sequelize) => {
     init(sequelize);
@@ -15,7 +17,9 @@ export const setUpProductsHexagon = (sequelize: Sequelize) => {
     // inject dependencies - injection
     const repository = new MySQLProductRepository(sequelize);
     const createCmdHandler = new CreateProductHandler(repository);
-    const getDetailQueryHandler = new QueryDetailProductHandler(repository);
+    const productBrandRepository = new RPCProxyBrandRepository(new RPCProductBrandRepository(config.rpc.brand));
+    const productCategoryRepository = new RPCProxyCategoryRepository(new RPCProductCategoryRepository(config.rpc.category));
+    const getDetailQueryHandler = new QueryDetailProductHandler(repository, productBrandRepository, productCategoryRepository);
     const updateCmdHandler = new ProductUpdateHandler(repository);
     const deleteCmdHandler = new DeleteProductHandler(repository);
     const listQueryHandler = new QueryListProductHandler(repository);
@@ -24,7 +28,9 @@ export const setUpProductsHexagon = (sequelize: Sequelize) => {
         getDetailQueryHandler,
         updateCmdHandler,
         deleteCmdHandler,
-        listQueryHandler
+        listQueryHandler,
+        productBrandRepository,
+        productCategoryRepository
     );
     const router = Router();
 
