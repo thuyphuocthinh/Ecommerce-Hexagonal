@@ -13,8 +13,10 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.9.3",
     "@types/sequelize": "^4.28.20",
     "@types/uuid": "^10.0.0",
@@ -24,9 +26,11 @@
   },
   "dependencies": {
     "axios": "^1.7.9",
+    "bcrypt": "^5.1.1",
     "code": "file:",
     "dotenv": "16.4.7",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "3.11.5",
     "sequelize": "6.37.5",
     "uuid": "11.0.3",

@@ -21,3 +21,28 @@ export interface ICommandHandler<Cmd, Result> {
 export interface IQueryHandler<Query, Result> {
     query(query: Query): Promise<Result | null>;
 }
+
+export enum UserRole {
+    ADMIN = 'admin',
+    USER = 'user',
+    GUEST = 'guest'
+}
+
+export interface TokenPayload {
+    userId: string;
+    role: UserRole;
+}
+
+export interface Requester extends TokenPayload {}
+
+export interface ITokenProvider {
+    generateToken(payload: TokenPayload): Promise<string>;
+    verifyToken(token: string): Promise<TokenPayload | null>;
+}
+
+export type TokenIntrospectResult = {
+    payload: TokenPayload | null;
+    error?: Error;
+    isOk: boolean;
+}
+

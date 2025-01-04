@@ -5,6 +5,7 @@ import { setUpCategoriesHexagon } from "./modules/categories";
 import { sequelize } from "./share/component/sequelize";
 import { setUpBrandsHexagon } from "./modules/brands";
 import { setUpProductsHexagon } from "./modules/products";
+import { setUpUsersHexagon } from "./modules/users";
 dotenv.config();
 
 // anonymous function ~ similar to java
@@ -20,6 +21,7 @@ console.log("Connection has been established successfully");
 app.use("/api/v1", setUpCategoriesHexagon(sequelize));
 app.use("/api/v1", setUpBrandsHexagon(sequelize));
 app.use("/api/v1", setUpProductsHexagon(sequelize));
+app.use("/api/v1", setUpUsersHexagon(sequelize));
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`)

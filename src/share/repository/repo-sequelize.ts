@@ -7,7 +7,8 @@ import { ModelStatus } from "../model/base-model";
 
 // implements for ORM here (Sequelize)
 export abstract class BaseRepositorySequelize<Entity, Condition, UpdateDTO> implements IRepository<Entity, Condition, UpdateDTO> {
-    constructor(private readonly sequelize: Sequelize, private readonly modelName: string) {}
+    constructor(private readonly sequelize: Sequelize, private readonly modelName: string) {
+    }
     async get(id: string): Promise<Entity | null> {
         const data = await this.sequelize.models[this.modelName].findByPk(id);
         if(!data) {

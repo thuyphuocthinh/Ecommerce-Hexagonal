@@ -21,5 +21,9 @@ export const config = {
             acquire: 30000,
             idle: 60000,
         }
+    },
+    jwtConstants: {
+        secret: process.env.JWT_SECRET || "kljsdfalkjasfdlkjasdfkj",
+        expiresIn: "2h"
     }
 }
