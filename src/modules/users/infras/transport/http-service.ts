@@ -23,7 +23,7 @@ export class UserHTTPService extends BaseHTTPService<UserRegistrationDTO, UserUp
             const token = await this.useCase.login({email, password});
             res.status(200).json({data: token});
         } catch (err) {
-            throw err;
+            res.status(400).json({data: (err as Error).message});
         }
     }
 
@@ -33,7 +33,7 @@ export class UserHTTPService extends BaseHTTPService<UserRegistrationDTO, UserUp
             const isVerified = await this.useCase.verifyToken(token as string);
             res.status(200).json({data: isVerified});
        } catch (err) {
-            throw err;
+            res.status(400).json({data: (err as Error).message});
        }
     }
 
@@ -47,7 +47,18 @@ export class UserHTTPService extends BaseHTTPService<UserRegistrationDTO, UserUp
             const {salt, password, ...others} = user;
             res.status(200).json({data: others});
         } catch (err) {
-            throw err;
+            res.status(400).json({data: (err as Error).message});
+        }
+    }
+
+    // this is an API for RPC
+    async introspectAPI(req: Request, res: Response) {
+        try {
+            const {token} = req.body;
+            const result = await this.useCase.verifyToken(token);
+            res.status(200).json({data: result});
+        } catch (err) {
+            res.status(400).json({data: (err as Error).message});
         }
     }
 }

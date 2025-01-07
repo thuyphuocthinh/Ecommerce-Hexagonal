@@ -3,3 +3,8 @@ export enum ModelStatus  {
     INACTIVE = "inactive",
     DELETED = "deleted",
 }
+
+export enum Role {
+    ADMIN = "admin",
+    USER = "user"
+}

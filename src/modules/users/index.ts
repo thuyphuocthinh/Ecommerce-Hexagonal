@@ -21,5 +21,9 @@ export const setUpUsersHexagon = (sequelize: Sequelize) => {
     router.post("/auth/register", httpService.register.bind(httpService));
     router.post("/auth/login", httpService.login.bind(httpService));
     router.get("/profile", httpService.profile.bind(httpService));
+
+    // RPC API (use internally)
+    // for other services to verify token via middleware
+    router.post("/RPC/introspect", httpService.introspectAPI.bind(httpService));
     return router;
 }

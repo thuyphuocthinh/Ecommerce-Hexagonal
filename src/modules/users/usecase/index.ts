@@ -1,9 +1,9 @@
-import { IRepository, ITokenProvider, UserRole } from "../../../share/interface";
+import { IRepository, ITokenProvider, TokenPayload, UserRole } from "../../../share/interface";
 import { I_paging_DTO } from "../../../share/model/paging";
 import { IUserUseCase } from "../interface";
 import { Gender, Role, Status, User, UserConditionDTO, UserLoginDTO, UserLoginDTOSchema, UserRegistrationDTO, UserRegistrationDTOSchema, UserUpdateDTO } from "../model";
 import { v7 } from "uuid";
-import { ErrEmailAlreadyExists, ErrInvalidCredentials, ErrUserNotActive } from "../model/error";
+import { ErrEmailAlreadyExists, ErrInvalidCredentials, ErrInvalidToken, ErrUserNotActive } from "../model/error";
 import bcrypt from "bcrypt";
 import { generateRandomString } from "../../../share/utils";
 import { ErrorDataNotFound } from "../../../share/model/base-error";
@@ -40,9 +40,8 @@ export class UserUseCase implements IUserUseCase {
         if(user.status === Status.INACTIVE || user.status === Status.BANNED) {
             throw ErrUserNotActive;
         }
-        // generate token
-        const role = user.role === Role.ADMIN ? UserRole.ADMIN : UserRole.USER;
-        const token = this.tokenService.generateToken({ userId: user.id, role: role });
+        // generate token;
+        const token = this.tokenService.generateToken({ userId: user.id, role: user.role });
         return token;
     }
 
@@ -82,8 +81,22 @@ export class UserUseCase implements IUserUseCase {
         return newId;
     }
 
-    async verifyToken(token: string): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async verifyToken(token: string): Promise<TokenPayload> {
+        const payload = await this.tokenService.verifyToken(token);
+        if(!payload) {
+            throw ErrInvalidToken;
+        }
+
+        const user = await this.userRepository.get(payload.userId);
+        if(!user) {
+            throw ErrorDataNotFound;
+        }
+
+        if(user.status === Status.DELETED || user.status === Status.BANNED || user.status   === Status.INACTIVE) {
+            throw ErrUserNotActive;
+        }
+
+        return {userId: user.id, role: user.role};
     }
 
     async create(data: UserRegistrationDTO): Promise<boolean | string> {

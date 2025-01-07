@@ -1,3 +1,4 @@
+import { Role } from "../model/base-model";
 import { I_paging_DTO } from "../model/paging";
 
 export interface IRepository<Entity, Condition, UpdateDTO> extends IQueryRepository<Entity, Condition>, ICommandRepository<Entity, UpdateDTO> {}
@@ -30,7 +31,7 @@ export enum UserRole {
 
 export interface TokenPayload {
     userId: string;
-    role: UserRole;
+    role: Role;
 }
 
 export interface Requester extends TokenPayload {}
@@ -46,3 +47,6 @@ export type TokenIntrospectResult = {
     isOk: boolean;
 }
 
+export interface ITokenIntrospect {
+    introspect(token: string): Promise<TokenIntrospectResult>;
+}

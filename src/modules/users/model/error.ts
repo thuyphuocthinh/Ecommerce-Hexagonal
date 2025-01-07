@@ -19,4 +19,5 @@ export const ErrCityInvalid = "City is invalid";
 export const ErrStateInvalid = "State is invalid";
 export const ErrCountryInvalid = "Country is invalid";
 export const ErrInvalidCredentials = "Credentials is invalid";
+export const ErrInvalidToken = "Token is invalid";
 
